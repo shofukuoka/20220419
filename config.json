@@ -1,0 +1,32 @@
+
+{
+  "GPIO_SW1": 4, //Boy switch
+  "GPIO_SW2": 5, //Girl switch
+  "GPIO_LED1": 22, //Boy LED
+  "GPIO_LED2": 24, //Girl LED
+
+  "Bannounce1": "/home/pi/Desktop/simple_flask/announce/announce1.wav", //Boy announce1
+  "Bannounce2": "/home/pi/Desktop/simple_flask/announce/announce2.wav", //Boy announce2
+  "Bannounce3": "/home/pi/Desktop/simple_flask/announce/announce3.wav", //Boy announce3
+  "Bannounce4": "/home/pi/Desktop/simple_flask/announce/announce4.wav", //Boy announce4
+  "Gannounce1": "/home/pi/Desktop/simple_flask/announce/announce1.wav", //Girl announce1
+  "Gannounce2": "/home/pi/Desktop/simple_flask/announce/announce2.wav", //Girl announce2
+  "Gannounce3": "/home/pi/Desktop/simple_flask/announce/announce3.wav", //Girl announce3
+  "Gannounce4": "/home/pi/Desktop/simple_flask/announce/announce4.wav", //Girl announce4
+
+  "Bthannounce1": 60,    //Boyannounce1 :1 min
+  "Bthannounce2": 120,   //Boyannounce2 :2 min
+  "Bthannounce3": 180,   //Boyannounce3 :3 min
+  "Bthannounce4": 240,   //Boyannounce4 :4 min
+  "Bthannounce5": 300,    //Boyannounce5 :5 min
+  "Gthannounce1": 60,    //Gannounce1 :1 min
+  "Gthannounce2": 120,   //Gannounce2 :2 min
+  "Gthannounce3": 180,   //Gannounce3 :3 min
+  "Gthannounce4": 240,   //Gannounce4 :4 min
+  "Gthannounce5": 300,   //Gannounce5 :5 min
+  "Door1opentime": 5,   //Boy door open/close within 5 sec
+  "Door2opentime": 5 ,   //Girl door open/close within 5 sec
+  "Blinktime1" : 120,  //Boyblinktime 2 min
+  "Blinktime2" : 120   //Girlblinktime 2 min
+}
+
