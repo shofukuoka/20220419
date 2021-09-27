@@ -10,7 +10,7 @@ from datetime import datetime, timedelta
 import logTable
 
 sqlite_file = '/home/pi/Desktop/simple_flask/ToData.db'
-conn = sqlite3.connect(sqlite_file, check_same_thread=False)
+conn = sqlite3.connect(sqlite_file, timeout=10)
 
 
 ftp = FTP()
@@ -31,7 +31,7 @@ with open (DataSend, "w+") as out_csv_file:
         
     
 
-Output_Directory = "/log/BH3030400_3/"
+Output_Directory = "/log/BH3030394_3/"
 cur.close()
 duration = time.time() - start_time
 print (duration)

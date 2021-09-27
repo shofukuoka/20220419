@@ -137,13 +137,28 @@ def start_web():
     app.run(debug=False, host="0.0.0.0")
 
 if __name__ == '__main__':
-    sw1 = threading.Thread(target=wiringthread.start, args=())
-    sw2 = threading.Thread(target=wiringthread2.start, args=())
-    sw1.start()
-    sw2.start()
+    
+    try:
 
-    print("restart")
-    start_web()
+        sw1 = threading.Thread(target=wiringthread.start, args=())
+        sw2 = threading.Thread(target=wiringthread2.start, args=())
+
+        sw1.start()
+        sw2.start()
+
+
+        print("restart")
+
+        start_web()
+        
+    except:
+        print("err")
+    
+        #boy 
+        
+
+
+
 
 
     #web = threading.Thread(target=start_web, args=())
