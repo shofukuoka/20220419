@@ -303,7 +303,7 @@ def start():
                     
                 else:
                     try:
-                    #print("debug check boy busy ")
+                        print("debug check boy busy ")
                         start_time = datetime.now()
                         
                         status_toilet = "busy"
@@ -314,23 +314,23 @@ def start():
                         duration = str(duration)
                         #print("debug boy before logcount print")
                         print ("person count:" + str(logcount))
-                        #print("debug  boy before led light")
+                        print("debug  boy before led light")
                         wiringpi.digitalWrite(GPIO_LED, 1)  # switch on LED. Sets port 12 to 1 (3V3, on)
                         #print("debug boy before store log")
                         store_log(str(logcount) + "男子 トイレ使用開始\n")
                         status("Busy")
                         print("\n Boybusy")
-                        #print("debug boy before insert db")
+                    
                         user_id = logTable.insert_table(1, current_date, current_time, 1, "Boy Busy", duration=duration)
-                        #print("debug after boy log insert to db")
+                        print("debug after boy log insert to db")
                     except:
-                        print("boy busy")
+                        print("error boy busy")
 
 
                 #print"debug check boy"
             else:
                 try:
-                    #print("debug  boy free")
+                    print("debug  boy free")
                     stop_waiting()
                     #print("debug boy stop sound")
                     status_toilet = "free"
@@ -341,7 +341,7 @@ def start():
                     #duration = duration.seconds / 60.0
                     #print("debug boy before gpio")
                     wiringpi.digitalWrite(GPIO_LED, 0) 
-                    #print("debug boy after gpio stop")
+                    print("debug boy after gpio stop")
                     # switch off LED. Sets port 12 to 0 (0V, off)
                     pygame.mixer.Channel(0).stop()
                     
@@ -349,7 +349,7 @@ def start():
                     duration = str(duration)
                        
                     store_log(duration + "\n 男子トイレ使用終了\n")
-                   
+                    print("debug boy off before insert db")
                     user_id = logTable.insert_table(1, current_date, current_time, 2, "Boy Free", duration=duration)
                     status("Free")
                     print ("Boy Free")                    

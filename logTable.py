@@ -1,14 +1,15 @@
 import sqlite3
 from datetime import datetime
 import threading
+from time import sleep
 # from wiringthread import mytable
-
+lock = threading.Lock()
 
 sqlite_file = '/home/pi/Desktop/simple_flask/ToData.db'
 conn = sqlite3.connect(sqlite_file, check_same_thread=False)
 
-#wait thread lock 
-lock = threading.Lock()
+
+
 
 def create_table():
 
@@ -44,9 +45,12 @@ def insert_table1(FTPTIME):
 
     conn.commit()
     cur.close()
-    return cur.lastrowid
+
     # lock close
     lock.release()
+    return cur.lastrowid
+    
+    
 
 
 
@@ -60,10 +64,12 @@ def insert_table(kinds, date,time, mode, message, duration=0):
 
     conn.commit()
     cur.close()
-    
-    return cur.lastrowid
     # lock close
+
     lock.release()
+    return cur.lastrowid
+    
+    
 
 def one_day():
 
@@ -71,9 +77,11 @@ def one_day():
     lock.acquire()
     cur = conn.cursor()
     cur.execute("select kinds, date, count(date) from DATA WHERE mode = 1 group by date, kinds order by date DESC ,kinds")
-    return cur.fetchall()
+
     # lock close
     lock.release()
+    return cur.fetchall()
+    
 
 
 def one_hour(date, gender):
@@ -85,9 +93,11 @@ def one_hour(date, gender):
                 " count(strftime('%H', time)) from DATA where mode = 1 AND date =? AND kinds=? "
                 "group by strftime('%H', time) order by kinds",
                 (date, gender,))
-    return cur.fetchall()
     # lock close
     lock.release()
+
+    return cur.fetchall()
+    
 
 
 
@@ -102,9 +112,11 @@ def average_one_day(gender):
                 "group by date order by date DESC, kinds",
                 (gender,))
 
-    return cur.fetchall()
     # lock close
     lock.release()
+
+    return cur.fetchall()
+    
 
 
 def average_one_hour(date,gender):
@@ -117,9 +129,12 @@ def average_one_hour(date,gender):
                 "count(strftime('%H',time)) from DATA where mode = 1 AND date = ? AND kinds = ?"
                 "group by strftime('%H',time) order by kinds",
                 (date, gender,))
-    return cur.fetchall()
+    
     # lock close
     lock.release()
+    
+    return cur.fetchall()
+    
 
 
 def update_table(user_id, duration):
