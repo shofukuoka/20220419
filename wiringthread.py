@@ -92,7 +92,6 @@ def count_people():
 def thAnn1():
     global  counter1
     global user_id
-    print("debug boy 1 min")
     counter1 += 1
     print ("男子 duration : 1  minutes",counter1)
 #    store_log(str(counter1))
@@ -108,7 +107,6 @@ def thAnn1():
 def thAnn2():
     global  counter2
     global user_id
-    print("debug boy 2 min")
     counter2 += 1
     print ("男子 duration : 2 minutes", counter2)
 #    store_log(str(counter2))
@@ -125,7 +123,6 @@ def thAnn3():
     global status_blink
     global start_blink
     global stop_threads
-    print("debug boy 3 min")
     counter3 += 1
     print ("男子 duration : 3  minutes" , counter3)
 #    store_log(str(counter3))
@@ -140,7 +137,6 @@ def thAnn3():
 def thAnn4():
     global counter4
     global user_id
-    print("debug boy 4 min")
     counter4 += 1
     print ("男子 duration : 4  minutes", counter4)
 #    store_log(str(counter4))
@@ -154,7 +150,6 @@ def thAnn4():
 def thAnn5():
     global counter5
     global user_id
-    print("debug boy 5 min")
     counter5 += 1
     print ("男子 duration : 5  minutes", counter5)
     sound0 = pygame.mixer.Sound(announce4)
@@ -227,43 +222,42 @@ def start():
         time.sleep(0.1)
         read1 = wiringpi.digitalRead(GPIO_SW)
         #        print "read1= %d" % read1
-        #print("debug boy check blink\n")
+        #print("debug boy blink check\n ")
         if status_blink and (status_toilet == "free"):
+            #print("debug boy blink stop")
             if (datetime.now() - durationStop).seconds>1:
-                #print("debug boy blink stop")
-                print("stop blink")
-                #blink stop err
-            try:
-                stop_threads = True
-                start_blink.join()
-                status_blink = False
-            except:
-                print("stop blink err boy")
-                duration = (datetime.now() - start_time).seconds /60
-                start_time = datetime.now()
-                duration = str(duration)
+                try:
+                    #print("stop blink")
+                    print("\nboy stop blink")
+                    stop_threads = True
+                    start_blink.join()
+                    status_blink = False
+                    #print("stop blink check")      
+                    duration = (datetime.now() - start_time).seconds /60       
+                    start_time = datetime.now()
+                    duration = str(duration)     
+                    store_log(duration + "\n 男子トイレ使用終了\n") 
+                    status("Free")
+                    print (duration)
+                    #print ("\n男子トイレ使用終了")
                     
-                store_log(duration + "\n 男子トイレ使用終了\n")
-                #user_id = logTable.insert_table(1, current_date, current_time, 2, "Boy Free", duration=duration)
-                status("Free")
-                #print (duration)
-                print ("\n男子トイレ使用終了")
-                temp_count = logcount
-                status_toilet = "free"
-                
+                    temp_count = logcount
+                    status_toilet = "free"
+                except:
+                    print("boy no blink err") 
+                    #stop blink
+
         elif (not status_blink) and status_toilet == "busy":
-            #print("debug boy blink start\n")
+            #print("debug girl blink start\n")
             if (datetime.now() - start_time).seconds > blinktime1:
-                print("start blink") 
-                #start blink err
-            try:
-                stop_threads = False
-                   
-                start_blink = threading.Thread(target=blink_led, args=())
-                start_blink.start()
-                status_blink = True
-            except:
-                print("start blink err boy")
+                try:
+                    stop_threads = False
+                    print("boy start blink")    
+                    start_blink = threading.Thread(target=blink_led, args=())
+                    start_blink.start()
+                    status_blink = True
+                except:
+                    print("boy blink err")
         if read0 == read1:
             continue
 
@@ -276,11 +270,6 @@ def start():
         end = datetime.now()
         
 
-        #        print "read0= %d" % read0
-        
-        
-    
-
         if read1 == read2:
             if read1 == 1:
                 start_waiting()
@@ -289,75 +278,64 @@ def start():
                 #start_d = datetime.now()
                 
                 if (duration1.seconds < door1opentime) :
+                    #print("debug boy within 5sec")
                     try:
-                        user_id = logTable.insert_table(1, current_date, current_time ,3, "Boy Busy", duration = duration)
-                        wiringpi.digitalWrite(GPIO_LED, 1) # switch on LED. Sets port 12 to 1 (3V3, on)
-                        status("Busy")
                         
+                        user_id = logTable.insert_table(1, current_date, current_time ,3, "Boy ON/OFF", duration = 0)
+                        wiringpi.digitalWrite(GPIO_LED, 1) # switch on LED. Sets port 12 to 1 (3V3, on)
+                        status("Boy on/off")
                         status_toilet = "busy"
                         print("\n Boy on/off")
                     except:
-                        print("5sec err boy")
+                        print("boy on/off err")
                
                     
                     
                 else:
+                    #print("debug boy busy")
                     try:
-                        print("debug check boy busy ")
-                        start_time = datetime.now()
-                        
+                        start_time = datetime.now()         
                         status_toilet = "busy"
-                        #print("debug after boy status")
                         logcount = logcount + 1
-                        #print("debug after log count")
                         start_d = datetime.now()
                         duration = str(duration)
-                        #print("debug boy before logcount print")
                         print ("person count:" + str(logcount))
-                        print("debug  boy before led light")
                         wiringpi.digitalWrite(GPIO_LED, 1)  # switch on LED. Sets port 12 to 1 (3V3, on)
-                        #print("debug boy before store log")
                         store_log(str(logcount) + "男子 トイレ使用開始\n")
                         status("Busy")
                         print("\n Boybusy")
-                    
-                        user_id = logTable.insert_table(1, current_date, current_time, 1, "Boy Busy", duration=duration)
-                        print("debug after boy log insert to db")
+                        #print("debug before insert boy to db")
+                        user_id = logTable.insert_table(1, current_date, current_time, 1, "Boy Busy", duration=0)
+                        #print("debug after insert boy to db")
                     except:
-                        print("error boy busy")
+                        print("boy busy err")
 
 
-                #print"debug check boy"
+
             else:
                 try:
-                    print("debug  boy free")
+                    #print("debug boy ann stop")  
                     stop_waiting()
-                    #print("debug boy stop sound")
                     status_toilet = "free"
-                    #print("debug boy after status")
                     durationStop = datetime.now()
                     time_end = datetime.now()
                     duration = time_end - start_d
                     #duration = duration.seconds / 60.0
-                    #print("debug boy before gpio")
-                    wiringpi.digitalWrite(GPIO_LED, 0) 
-                    print("debug boy after gpio stop")
-                    # switch off LED. Sets port 12 to 0 (0V, off)
+                    wiringpi.digitalWrite(GPIO_LED, 0) # switch off LED. Sets port 12 to 0 (0V, off)
+                    #print("debug boy before stop ann")
                     pygame.mixer.Channel(0).stop()
-                    
+                    #print("debug boy after stop ann")
                     #if temp_count<logcount:
-                    duration = str(duration)
-                       
+                    duration = str(duration)         
                     store_log(duration + "\n 男子トイレ使用終了\n")
-                    print("debug boy off before insert db")
                     user_id = logTable.insert_table(1, current_date, current_time, 2, "Boy Free", duration=duration)
                     status("Free")
-                    print ("Boy Free")                    
+                    #print (duration)
+                    print ("\n boy free")
                     temp_count = logcount
                 except:
-                    print("stop err boy")
+                    print("boy off err")
             # else:
-                
                 if temp_count > logcount:
                     logTable.update_table(user_id, duration)
                     temp_count = logcount
@@ -398,3 +376,4 @@ def store_error(log):
         f.close()
     except:
         print("ERROR")
+

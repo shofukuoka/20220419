@@ -6,7 +6,7 @@ from time import sleep
 lock = threading.Lock()
 
 sqlite_file = '/home/pi/Desktop/simple_flask/ToData.db'
-conn = sqlite3.connect(sqlite_file, check_same_thread=False)
+conn = sqlite3.connect(sqlite_file, check_same_thread = False)
 
 
 

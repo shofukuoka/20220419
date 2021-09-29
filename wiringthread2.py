@@ -225,7 +225,8 @@ def start():
             #print("debug girl blink stop")
             if (datetime.now() - durationStop2).seconds > 1:
                 try:
-                    print("stop blink")
+                    print("\n girl stop blink")
+                    #print("stop blink")
                     stop2_threads = True
                     start2_blink.join()
                     status2_blink = False
@@ -235,23 +236,23 @@ def start():
                     store2_log(duration + "\n 男子トイレ使用終了\n")
                     status2("free")
                     print (duration)
-                    print("\n girlblink")
+                    
                     temp2_count = log2count
                     status2_toilet = "free"
                 except:
-                    print("stop blink err girl")
+                    print("girl stop blink err ")
         
         elif (not status2_blink) and status2_toilet == "busy":
             #print("debug girl blink start\n")
             if(datetime.now() - start_time).seconds > blinktime2 :
                 try:
                     stop2_threads = False
-                    print("start blink")
+                    print("girl start blink")
                     start2_blink = threading.Thread(target = blink_led, args = ())
                     start2_blink.start()
                     status2_blink = True
                 except:
-                    print("start blink girl")
+                    print("girl start blink err")
         if read0 == read1:
 
             continue
@@ -275,48 +276,44 @@ def start():
                 if (duration2.seconds) < door2opentime:
                     #thAnn5()
                     #start_d = datetime.now()
+                    #print("debug girl within 5sec")
                     try:
                         status2_toilet = "busy"
                         wiringpi.digitalWrite(GPIO_LED, 1) # switch on LED. Sets port 18 to 1 (3V3, on)
-                        user_id = logTable.insert_table(2, current_date, current_time,3, "Girl Busy", duration = duration)
-                        status2("Busy")
-        #                print ("\n 女子トイレUse")
+                        user_id = logTable.insert_table(2, current_date, current_time,3, "Girl ON/Off", duration = 0)
+                        status2("\ngirl on/off\n")
+                        print ("\n girl on/off")
                     except:
-                        print("5sec err girl")
+                        print("girl on/off err")
                 
                 else:
                     #print("debug girl busy")
                 #    stop_thAnn5()
                     try:
-
-                        status2_toilet = "busy"
-                        print("debug after girl ")
-                        log2count = log2count + 1
-                        print("debug girl after logcount ")
                         start_time = datetime.now()
+                        status2_toilet = "busy"
+                        #print("debug after girl ")
+                        log2count = log2count + 1
+                        #print("debug girl after logcount ")
                         start_d = datetime.now()
                         print ("person count:" + str(log2count))
-                        print("debug girl after print log count")
+                        #print("debug girl after print log count")
                         
                         wiringpi.digitalWrite(GPIO_LED, 1) 
-                        print("debug girl after gpio led show ") # switch on LED. Sets port 18 to 1 (3V3, on)
+                        #print("debug girl after gpio led show ") # switch on LED. Sets port 18 to 1 (3V3, on)
                         store2_log(str(log2count) + "女子 トイレBusy\n")
                         #print("debug girl after log store")
                         status2("Girl Busy")
                         print ("\n Girl Busy\n")
-                        print("debug insert girl to db")
-                        user_id = logTable.insert_table(2, current_date, current_time, 1, "Girl Busy", duration=duration)
-                        print("debug after girl log inserted to db")
+                        #print("debug before insert girl to db")
+                        user_id = logTable.insert_table(2, current_date, current_time, 1, "Girl Busy", duration=0)
+                        #print("debug after girl log inserted to db")
                     except:
-                        print("busy err girl")
-
-
-
-            
+                        print("girl busy err ")    
 
             else:
                 try:
-                    print("debug girl free")
+                    #print("debug girl ann stop")
                     stop_waiting()
                     #print("debug girl after stop th")
                     status2_toilet = "free"
@@ -324,24 +321,24 @@ def start():
                     time_end = datetime.now()
                     duration = time_end - start_d
                     #duration = duration.seconds/60.0
-                    print("debug girl before gpio stop")
+                    #print("debug girl before gpio stop")
                     wiringpi.digitalWrite(GPIO_LED, 0) # switch off LED. Sets port 18 to 0 (0V, off)
-                    #print("debug girl before sound off")
+                    #print("debug girl before stop ann")
                     pygame.mixer.Channel(1).stop()
-                    print("debug girl after sound off")
+                    #print("debug girl after stop ann")
                     duration = str(duration)
                 #    store2_log("女子 トイレFree\n")
                     store2_log(duration + "\n 女子トイレ使用終了\n")
-                    print("debug girl before insert db for stop")
+                    #print("debug girl before insert db for stop")
                     user_id = logTable.insert_table(2,current_date, current_time, 2, "Girl Free", duration= duration)
-                    print("debug girl after insert db for stop")
+                    #print("debug girl after insert db for stop")
                     print("\n Girl Free")
                     #print (duration)
                     status2("Free")
                     temp2_count = log2count
                 #   print ("\n女子トイレFree\n")
                 except:
-                    print("stop err girl")
+                    print("girl off err ")
                 if temp2_count > log2count:
                     logTable.update_table(user_id , duration)
                     temp2_count = log2count
