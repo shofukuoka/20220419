@@ -247,9 +247,9 @@ def start():
                     
                     temp_count = logcount
                     status_toilet = "free"
-                except: 
+                except Exception as e:
                     logger.error("boy blink stop err")
-                    #logger.Error(e)
+                    logger.error(e)
 
         elif (not status_blink) and status_toilet == "busy":
             #print("debug girl blink start\n")
@@ -261,9 +261,9 @@ def start():
                     start_blink.start()
                     status_blink = True
                 
-                except: 
+                except Exception as e: 
                     logger.error("boy blink start err")
-                    #logger.Error(e)
+                    logger.error(e)
         if read0 == read1:
             continue
 
@@ -293,9 +293,9 @@ def start():
                         status("Boy on/off")
                         status_toilet = "busy"
                         print("\n Boy on/off")
-                    except :
+                    except Exception as e:
                         logger.error("boy on/off err")
-                        #logger.Error(e)
+                        logger.error(e)
                
                     
                     
@@ -316,9 +316,9 @@ def start():
                         
                         user_id = logTable.insert_table(1, current_date, current_time, 1, "Boy Busy", duration=0)
                         #print("debug after insert boy to db")
-                    except: 
+                    except Exception as e:
                         logger.error("boy on err")
-                        #logger.Error(e)
+                        logger.error(e)
 
 
             else:
@@ -345,9 +345,9 @@ def start():
                     #print (duration)
                     print ("\n boy free")
                     temp_count = logcount
-                except: 
+                except Exception as e:
                     logger.error("boy off err")
-                    #logger.Error(e)
+                    logger.error(e)
             # else:
                 if temp_count > logcount:
                     logTable.update_table(user_id, duration)

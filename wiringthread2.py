@@ -244,9 +244,9 @@ def start():
                     
                     temp2_count = log2count
                     status2_toilet = "free"
-                except: 
+                except Exception as e:
                     logger.error("girl blink stop err")
-                    #logger.Error(e)
+                    logger.error(e)
         
         elif (not status2_blink) and status2_toilet == "busy":
             #print("debug girl blink start\n")
@@ -257,9 +257,9 @@ def start():
                     start2_blink = threading.Thread(target = blink_led, args = ())
                     start2_blink.start()
                     status2_blink = True
-                except: 
+                except Exception as e: 
                     logger.error("girl blink start err")
-                    #logger.Error(e)
+                    logger.error(e)
         if read0 == read1:
 
             continue
@@ -291,9 +291,9 @@ def start():
                         user_id = logTable.insert_table(2, current_date, current_time,3, "Girl ON/Off", duration = 0)
                         status2("\ngirl on/off\n")
                         print ("\n girl on/off")
-                    except: 
+                    except Exception as e:
                         logger.error("girl on/off err")
-                        #logger.Error(e)
+                        logger.error(e)
                 
                 else:
                     #print("debug girl busy")
@@ -318,9 +318,9 @@ def start():
                         
                         user_id = logTable.insert_table(2, current_date, current_time, 1, "Girl Busy", duration=0)
                         #print("debug after girl log inserted to db")
-                    except: 
+                    except Exception as e:
                         logger.error("girl on err")
-                        #logger.Error(e)
+                        logger.error(e)
                           
 
             else:
@@ -350,9 +350,10 @@ def start():
                     status2("Free")
                     temp2_count = log2count
                 #   print ("\n女子トイレFree\n")
-                except:
+                except Exception as e:
                     logger.error("girl off err")
-                    #logger.Error(e)
+                    logger.error(e)
+
 
                 if temp2_count > log2count:
                     logTable.update_table(user_id , duration)
