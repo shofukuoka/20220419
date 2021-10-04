@@ -8,6 +8,10 @@ import pygame.mixer
 #from pygame.mixer import Sound
 import logTable
 import commentjson
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 
 
@@ -243,9 +247,9 @@ def start():
                     
                     temp_count = logcount
                     status_toilet = "free"
-                except:
-                    print("boy no blink err") 
-                    #stop blink
+                except: 
+                    logger.Error("boy blink stop err")
+                    logger.Error(e)
 
         elif (not status_blink) and status_toilet == "busy":
             #print("debug girl blink start\n")
@@ -256,8 +260,10 @@ def start():
                     start_blink = threading.Thread(target=blink_led, args=())
                     start_blink.start()
                     status_blink = True
-                except:
-                    print("boy blink err")
+                
+                except: 
+                    logger.Error("boy blink start err")
+                    logger.Error(e)
         if read0 == read1:
             continue
 
@@ -281,13 +287,15 @@ def start():
                     #print("debug boy within 5sec")
                     try:
                         
+                        
                         user_id = logTable.insert_table(1, current_date, current_time ,3, "Boy ON/OFF", duration = 0)
                         wiringpi.digitalWrite(GPIO_LED, 1) # switch on LED. Sets port 12 to 1 (3V3, on)
                         status("Boy on/off")
                         status_toilet = "busy"
                         print("\n Boy on/off")
-                    except:
-                        print("boy on/off err")
+                    except :
+                        logger.Error("boy on/off err")
+                        logger.Error(e)
                
                     
                     
@@ -305,17 +313,19 @@ def start():
                         status("Busy")
                         print("\n Boybusy")
                         #print("debug before insert boy to db")
+                        
                         user_id = logTable.insert_table(1, current_date, current_time, 1, "Boy Busy", duration=0)
                         #print("debug after insert boy to db")
-                    except:
-                        print("boy busy err")
-
+                    except: 
+                        logger.Error("boy on err")
+                        logger.Error(e)
 
 
             else:
                 try:
                     #print("debug boy ann stop")  
                     stop_waiting()
+                    pygame.mixer.Channel(0).stop()
                     status_toilet = "free"
                     durationStop = datetime.now()
                     time_end = datetime.now()
@@ -323,18 +333,20 @@ def start():
                     #duration = duration.seconds / 60.0
                     wiringpi.digitalWrite(GPIO_LED, 0) # switch off LED. Sets port 12 to 0 (0V, off)
                     #print("debug boy before stop ann")
-                    pygame.mixer.Channel(0).stop()
+                    
                     #print("debug boy after stop ann")
                     #if temp_count<logcount:
                     duration = str(duration)         
                     store_log(duration + "\n 男子トイレ使用終了\n")
+                    
                     user_id = logTable.insert_table(1, current_date, current_time, 2, "Boy Free", duration=duration)
                     status("Free")
                     #print (duration)
                     print ("\n boy free")
                     temp_count = logcount
-                except:
-                    print("boy off err")
+                except: 
+                    logger.Error("boy off err")
+                    logger.Error(e)
             # else:
                 if temp_count > logcount:
                     logTable.update_table(user_id, duration)

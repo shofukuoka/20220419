@@ -8,6 +8,9 @@ import time
 import os
 from datetime import datetime, timedelta
 import logTable
+import threading
+
+lock = threading.Lock()
 
 sqlite_file = '/home/pi/Desktop/simple_flask/ToData.db'
 conn = sqlite3.connect(sqlite_file, timeout=10)
@@ -15,9 +18,10 @@ conn = sqlite3.connect(sqlite_file, timeout=10)
 
 ftp = FTP()
 
+lock.acquire()
 cur = conn.cursor()
-
 cur.execute("SELECT DISTINCT date,time, kinds ,mode, duration  FROM DATA JOIN SYSTEM on DATA.date > SYSTEM.FTPTIME ")
+lock.release()
 start_time =time.time()
 DataSend = "/home/pi/Desktop/simple_flask/output.csv"
     #Export dat into csv file
@@ -31,7 +35,7 @@ with open (DataSend, "w+") as out_csv_file:
         
     
 
-Output_Directory = "/log/BH3030394_3/"
+Output_Directory = "/log/BH3030394_6/"
 cur.close()
 duration = time.time() - start_time
 print (duration)

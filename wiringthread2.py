@@ -9,6 +9,9 @@ import threading
 import logTable
 import commentjson
 import pygame.mixer
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 #pygame.mixer.quit()
@@ -239,8 +242,9 @@ def start():
                     
                     temp2_count = log2count
                     status2_toilet = "free"
-                except:
-                    print("girl stop blink err ")
+                except: 
+                    logger.Error("girl blink stop err")
+                    logger.Error(e)
         
         elif (not status2_blink) and status2_toilet == "busy":
             #print("debug girl blink start\n")
@@ -251,8 +255,9 @@ def start():
                     start2_blink = threading.Thread(target = blink_led, args = ())
                     start2_blink.start()
                     status2_blink = True
-                except:
-                    print("girl start blink err")
+                except: 
+                    logger.Error("girl blink start err")
+                    logger.Error(e)
         if read0 == read1:
 
             continue
@@ -280,11 +285,13 @@ def start():
                     try:
                         status2_toilet = "busy"
                         wiringpi.digitalWrite(GPIO_LED, 1) # switch on LED. Sets port 18 to 1 (3V3, on)
+                        
                         user_id = logTable.insert_table(2, current_date, current_time,3, "Girl ON/Off", duration = 0)
                         status2("\ngirl on/off\n")
                         print ("\n girl on/off")
-                    except:
-                        print("girl on/off err")
+                    except: 
+                        logger.Error("girl on/off err")
+                        logger.Error(e)
                 
                 else:
                     #print("debug girl busy")
@@ -306,10 +313,13 @@ def start():
                         status2("Girl Busy")
                         print ("\n Girl Busy\n")
                         #print("debug before insert girl to db")
+                        
                         user_id = logTable.insert_table(2, current_date, current_time, 1, "Girl Busy", duration=0)
                         #print("debug after girl log inserted to db")
-                    except:
-                        print("girl busy err ")    
+                    except: 
+                        logger.Error("girl on err")
+                        logger.Error(e)
+                          
 
             else:
                 try:
@@ -330,6 +340,7 @@ def start():
                 #    store2_log("女子 トイレFree\n")
                     store2_log(duration + "\n 女子トイレ使用終了\n")
                     #print("debug girl before insert db for stop")
+                    
                     user_id = logTable.insert_table(2,current_date, current_time, 2, "Girl Free", duration= duration)
                     #print("debug girl after insert db for stop")
                     print("\n Girl Free")
@@ -338,7 +349,9 @@ def start():
                     temp2_count = log2count
                 #   print ("\n女子トイレFree\n")
                 except:
-                    print("girl off err ")
+                    logger.Error("girl off err")
+                    logger.Error(e)
+
                 if temp2_count > log2count:
                     logTable.update_table(user_id , duration)
                     temp2_count = log2count
