@@ -8,11 +8,11 @@ import pygame.mixer
 #from pygame.mixer import Sound
 import logTable
 import commentjson
-import logging
+import logging.config
 
-logger = logging.getLogger(__name__)
-
-
+logging.config.fileConfig('logging.conf')
+  
+logger = logging.getLogger()
 
 
 
@@ -248,8 +248,8 @@ def start():
                     temp_count = logcount
                     status_toilet = "free"
                 except: 
-                    logger.Error("boy blink stop err")
-                    logger.Error(e)
+                    logger.error("boy blink stop err")
+                    #logger.Error(e)
 
         elif (not status_blink) and status_toilet == "busy":
             #print("debug girl blink start\n")
@@ -262,8 +262,8 @@ def start():
                     status_blink = True
                 
                 except: 
-                    logger.Error("boy blink start err")
-                    logger.Error(e)
+                    logger.error("boy blink start err")
+                    #logger.Error(e)
         if read0 == read1:
             continue
 
@@ -294,8 +294,8 @@ def start():
                         status_toilet = "busy"
                         print("\n Boy on/off")
                     except :
-                        logger.Error("boy on/off err")
-                        logger.Error(e)
+                        logger.error("boy on/off err")
+                        #logger.Error(e)
                
                     
                     
@@ -317,12 +317,13 @@ def start():
                         user_id = logTable.insert_table(1, current_date, current_time, 1, "Boy Busy", duration=0)
                         #print("debug after insert boy to db")
                     except: 
-                        logger.Error("boy on err")
-                        logger.Error(e)
+                        logger.error("boy on err")
+                        #logger.Error(e)
 
 
             else:
                 try:
+
                     #print("debug boy ann stop")  
                     stop_waiting()
                     pygame.mixer.Channel(0).stop()
@@ -345,8 +346,8 @@ def start():
                     print ("\n boy free")
                     temp_count = logcount
                 except: 
-                    logger.Error("boy off err")
-                    logger.Error(e)
+                    logger.error("boy off err")
+                    #logger.Error(e)
             # else:
                 if temp_count > logcount:
                     logTable.update_table(user_id, duration)
@@ -388,4 +389,8 @@ def store_error(log):
         f.close()
     except:
         print("ERROR")
+        
+
+
+
 

@@ -136,6 +136,17 @@ def start_web():
 
     app.run(debug=False, host="0.0.0.0")
 
+    logging.config.fileConfig('logging.conf')
+  
+    logger = logging.getLogger()
+  
+    logger.debug('debug')
+    logger.info('info')
+    logger.warning('warning')
+    logger.error('error')
+    logger.critical('critical')
+    
+
 if __name__ == '__main__':
     
     try:

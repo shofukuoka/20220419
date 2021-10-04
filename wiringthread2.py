@@ -9,9 +9,11 @@ import threading
 import logTable
 import commentjson
 import pygame.mixer
-import logging
+import logging.config
 
-logger = logging.getLogger(__name__)
+logging.config.fileConfig('logging.conf')
+  
+logger = logging.getLogger()
 
 
 #pygame.mixer.quit()
@@ -243,8 +245,8 @@ def start():
                     temp2_count = log2count
                     status2_toilet = "free"
                 except: 
-                    logger.Error("girl blink stop err")
-                    logger.Error(e)
+                    logger.error("girl blink stop err")
+                    #logger.Error(e)
         
         elif (not status2_blink) and status2_toilet == "busy":
             #print("debug girl blink start\n")
@@ -256,8 +258,8 @@ def start():
                     start2_blink.start()
                     status2_blink = True
                 except: 
-                    logger.Error("girl blink start err")
-                    logger.Error(e)
+                    logger.error("girl blink start err")
+                    #logger.Error(e)
         if read0 == read1:
 
             continue
@@ -290,8 +292,8 @@ def start():
                         status2("\ngirl on/off\n")
                         print ("\n girl on/off")
                     except: 
-                        logger.Error("girl on/off err")
-                        logger.Error(e)
+                        logger.error("girl on/off err")
+                        #logger.Error(e)
                 
                 else:
                     #print("debug girl busy")
@@ -317,8 +319,8 @@ def start():
                         user_id = logTable.insert_table(2, current_date, current_time, 1, "Girl Busy", duration=0)
                         #print("debug after girl log inserted to db")
                     except: 
-                        logger.Error("girl on err")
-                        logger.Error(e)
+                        logger.error("girl on err")
+                        #logger.Error(e)
                           
 
             else:
@@ -349,8 +351,8 @@ def start():
                     temp2_count = log2count
                 #   print ("\n女子トイレFree\n")
                 except:
-                    logger.Error("girl off err")
-                    logger.Error(e)
+                    logger.error("girl off err")
+                    #logger.Error(e)
 
                 if temp2_count > log2count:
                     logTable.update_table(user_id , duration)
