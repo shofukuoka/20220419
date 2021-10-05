@@ -6,17 +6,17 @@ import time
 import threading
 import pygame.mixer
 #from pygame.mixer import Sound
-import logTable
+#import logTable
 import commentjson
-import logging.config
+#import logging.config
 
-logging.config.fileConfig('logging.conf')
+#logging.config.fileConfig('logging.conf')
   
-logger = logging.getLogger()
+#logger = logging.getLogger()
 
 
 
-logTable.create_table()
+#logTable.create_table()
 
 pygame.mixer.init()
 #pygame.mixer.pre_init(44100,-16,2, 1024)
@@ -240,7 +240,7 @@ def start():
                     duration = (datetime.now() - start_time).seconds /60       
                     start_time = datetime.now()
                     duration = str(duration)     
-                    store_log(duration + "\n 男子トイレ使用終了\n") 
+                    #store_log(duration + "\n 男子トイレ使用終了\n") 
                     status("Free")
                     print (duration)
                     #print ("\n男子トイレ使用終了")
@@ -287,8 +287,8 @@ def start():
                     #print("debug boy within 5sec")
                     try:
                         
-                        
-                        user_id = logTable.insert_table(1, current_date, current_time ,3, "Boy ON/OFF", duration = 0)
+                        store_log("3" )
+                        #user_id = logTable.insert_table(1, current_date, current_time ,3, "Boy ON/OFF", duration = 0)
                         wiringpi.digitalWrite(GPIO_LED, 1) # switch on LED. Sets port 12 to 1 (3V3, on)
                         status("Boy on/off")
                         status_toilet = "busy"
@@ -309,12 +309,12 @@ def start():
                         duration = str(duration)
                         print ("person count:" + str(logcount))
                         wiringpi.digitalWrite(GPIO_LED, 1)  # switch on LED. Sets port 12 to 1 (3V3, on)
-                        store_log(str(logcount) + "男子 トイレ使用開始\n")
+                        store_log("1" )
                         status("Busy")
-                        print("\n Boybusy")
+                        print("\n Boybusy\n")
                         #print("debug before insert boy to db")
                         
-                        user_id = logTable.insert_table(1, current_date, current_time, 1, "Boy Busy", duration=0)
+                        #user_id = logTable.insert_table(1, current_date, current_time, 1, "Boy Busy", duration=0)
                         #print("debug after insert boy to db")
                     except Exception as e:
                         logger.error("boy on err")
@@ -338,9 +338,9 @@ def start():
                     #print("debug boy after stop ann")
                     #if temp_count<logcount:
                     duration = str(duration)         
-                    store_log(duration + "\n 男子トイレ使用終了\n")
+                    store_log("2" + ","   + duration )
                     
-                    user_id = logTable.insert_table(1, current_date, current_time, 2, "Boy Free", duration=duration)
+                    #user_id = logTable.insert_table(1, current_date, current_time, 2, "Boy Free", duration=duration)
                     status("Free")
                     #print (duration)
                     print ("\n boy free")
@@ -361,8 +361,8 @@ def store_log(log):
     date_time = now.strftime("[%Y/%m/%d  %H:%M:%S]")
     text_log = date_time + " " + log
     try:
-        f = open(log_file, "a+", )
-        f = f.write(text_log)
+        f = open("/home/pi/Desktop/simple_flask/LOG/boy.csv", "a+", )
+        f = f.write("{0},{1}\n".format(now.strftime("%Y/%m/%d  %H:%M:%S"),str(log)))
         f.close()
     except:
         store_error("file open error!!\n")

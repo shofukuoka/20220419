@@ -6,7 +6,8 @@ import wiringthread
 import wiringthread2
 #import ftp
 
-import logTable
+#import logTable
+
 
 
 

@@ -1,1 +1,1 @@
-2021-10-04 19:00:07,589 wiringthread2.py:296 database is locked
+2021-10-05 11:59:32,049 wiringthread.py:350 bad operand type for unary +: 'str'

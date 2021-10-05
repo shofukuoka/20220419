@@ -7,12 +7,12 @@ import time
 
 
 
-File2Send = "/home/pi/Desktop/simple_flask/LOG/log.txt"
-FileSend = "/home/pi/Desktop/simple_flask/LOG/log2.txt"
-PowerSend = "/home/pi/Desktop/simple_flask/LOG/powerlog.txt"
-ShutdownSend = "/home/pi/Desktop/simple_flask/LOG/shutdown.txt"
+File2Send = "/home/pi/Desktop/simple_flask/LOG/boy.csv"
+FileSend = "/home/pi/Desktop/simple_flask/LOG/girl.csv"
+#PowerSend = "/home/pi/Desktop/simple_flask/LOG/powerlog.txt"
+#ShutdownSend = "/home/pi/Desktop/simple_flask/LOG/shutdown.txt"
 Status = "/home/pi/Desktop/simple_flask/LOG/status_log.txt"
-Output_Directory = "/log"
+Output_Directory = "/log/BH3030394_6/"
 
 ftp = FTP()
 ftp.set_debuglevel(2)
@@ -28,20 +28,20 @@ ftp.cwd(Output_Directory)
     
 fp = open(File2Send, "rb")
 fp1 = open(FileSend, "rb")
-fp2 = open(PowerSend, "rb")
+#fp2 = open(PowerSend, "rb")
  #   fp3 = open(PowerSend, "rb")
  #   fp3 = open(ShutdownSend, "rb")
 
 
 ftp.storbinary('STOR %s' % os.path.basename(File2Send) , fp, 1024)
 ftp.storbinary('STOR %s' % os.path.basename(FileSend) , fp1, 1024)
-ftp.storbinary('STOR %s' % os.path.basename(PowerSend) , fp2, 1024)
+#ftp.storbinary('STOR %s' % os.path.basename(PowerSend) , fp2, 1024)
  #   session.storbinary('test' , fp3)
  #   session.storbinary('STOR %s' % os.path.basename(File2Send) , fp3, 1024)
 
 fp.close()
 fp1.close()
-fp2.close()
+#fp2.close()
  #   fp3.close()
  #   session.quit()
 #send_file()
