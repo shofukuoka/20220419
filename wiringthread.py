@@ -225,7 +225,7 @@ def start():
 
         time.sleep(0.1)
         read1 = wiringpi.digitalRead(GPIO_SW)
-        #        print "read1= %d" % read1
+        #print "read1= %d" % read1
         #print("debug boy blink check\n ")
         if status_blink and (status_toilet == "free"):
             #print("debug boy blink stop")
